@@ -111,7 +111,6 @@ class MyPaintApp(App):
         purple_btn.bind(on_release=lambda x: self.change_color('purple'))
         parent.add_widget(purple_btn)
 
-
         return parent
 
     def change_color(self, clr):
@@ -123,28 +122,31 @@ class MyPaintApp(App):
         self.painter.canvas.clear()
 
         viewer = start_recognize()
+        try:
+            for val in dict_of_numbers.values():
+                if val[0] in viewer.split(' '):
+                    glob_viewer[0] = 'numbers'
+                    glob_viewer[1] = list(dict_of_numbers.keys())[list(dict_of_numbers.values()).index(val)]
+                elif val[1] in viewer.split(' '):
+                    glob_viewer[0] = 'numbers'
+                    glob_viewer[1] = list(dict_of_numbers.keys())[list(dict_of_numbers.values()).index(val)]
 
-        for val in dict_of_numbers.values():
-            if val[0] in viewer.split(' '):
-                glob_viewer[0] = 'numbers'
-                glob_viewer[1] = list(dict_of_numbers.keys())[list(dict_of_numbers.values()).index(val)]
-            elif val[1] in viewer.split(' '):
-                glob_viewer[0] = 'numbers'
-                glob_viewer[1] = list(dict_of_numbers.keys())[list(dict_of_numbers.values()).index(val)]
+            for key in dict_of_colors.keys():
+                if key in viewer:
+                    glob_viewer[0] = 'colors'
+                    glob_viewer[1] = dict_of_colors[key]
 
-        for key in dict_of_colors.keys():
-            if key in viewer:
-                glob_viewer[0] = 'colors'
-                glob_viewer[1] = dict_of_colors[key]
+            for key in dict_of_shapes.keys():
+                if key in viewer:
+                    glob_viewer[0] = 'shapes'
+                    glob_viewer[1] = dict_of_shapes[key]
 
-        for key in dict_of_shapes.keys():
-            if key in viewer:
-                glob_viewer[0] = 'shapes'
-                glob_viewer[1] = dict_of_shapes[key]
-
-        modal = ModalView(background_color="black", size_hint=(.4, .4))
-        modal.add_widget(Image(source=f'{glob_viewer[0]}/{glob_viewer[1]}.png', height=400, width=400))
-        modal.open()
+            modal = ModalView(background_color="black", size_hint=(.4, .4))
+            modal.add_widget(Image(source=f'{glob_viewer[0]}/{glob_viewer[1]}.png', height=400, width=400))
+            modal.open()
+        except:
+            pass
+        pass
         glob_viewer[0], glob_viewer[1] = 'numbers', 'zero'
 
 
